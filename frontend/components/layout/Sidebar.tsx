@@ -16,7 +16,7 @@ import {
 } from "../../lib/api";
 import { timeAgo } from "../../lib/utils";
 import DeleteConfirmModal from "../modals/DeleteConfirmModal";
-import { Collection, SavedRequest } from "../../types";
+import { Collection, KeyValueRow, SavedRequest } from "../../types";
 
 export default function Sidebar() {
   const {
