@@ -24,6 +24,7 @@ export default function Sidebar() {
     setSidebarTab,
     collections,
     setCollections,
+    collectionsLoading,
     history,
     setHistory,
     addTab,
@@ -287,13 +288,22 @@ export default function Sidebar() {
         {/* Collections Tree or History List */}
         <div className="flex-1 overflow-y-auto custom-scrollbar pr-1">
           {sidebarTab === "collections" ? (
-            <div className="space-y-1">
-              {filteredCollections.length === 0 ? (
-                <div className="text-center py-10 text-xs text-text-secondary italic">
-                  No collections found
-                </div>
-              ) : (
-                filteredCollections.map((col) => {
+            collectionsLoading ? (
+              <div className="space-y-1 p-2">
+                {[1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="animate-pulse h-8 rounded bg-border opacity-50"
+                  />
+                ))}
+              </div>
+            ) : filteredCollections.length === 0 ? (
+              <div className="text-center py-10 text-xs text-text-secondary italic">
+                No collections found
+              </div>
+            ) : (
+              <div className="space-y-1">
+                {filteredCollections.map((col) => {
                   const isExpanded = searchQuery.trim() !== "" ? true : !!expandedCols[col.id];
                   const isMenuOpen = activeMenuId === col.id;
 
@@ -342,7 +352,7 @@ export default function Sidebar() {
                                   }}
                                   className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-border/30 transition-colors flex items-center space-x-2"
                                 >
-                                  <Edit className="w-3 h-3 text-text-secondary" />
+                                  <Edit className="w-3.5 h-3.5 text-text-secondary" />
                                   <span>Rename</span>
                                 </button>
                                 <button
@@ -352,7 +362,7 @@ export default function Sidebar() {
                                   }}
                                   className="w-full text-left px-3 py-1.5 text-xs text-text-primary hover:bg-border/30 transition-colors flex items-center space-x-2"
                                 >
-                                  <Download className="w-3 h-3 text-text-secondary" />
+                                  <Download className="w-3.5 h-3.5 text-text-secondary" />
                                   <span>Export</span>
                                 </button>
                                 <button
@@ -362,7 +372,7 @@ export default function Sidebar() {
                                   }}
                                   className="w-full text-left px-3 py-1.5 text-xs text-status-error hover:bg-status-error/10 transition-colors flex items-center space-x-2"
                                 >
-                                  <Trash2 className="w-3 h-3" />
+                                  <Trash2 className="w-3.5 h-3.5" />
                                   <span>Delete</span>
                                 </button>
                               </div>
@@ -400,7 +410,7 @@ export default function Sidebar() {
                                       }}
                                       className="opacity-0 group-hover/req:opacity-100 p-0.5 rounded hover:bg-border/40 text-text-secondary hover:text-text-primary transition-all"
                                     >
-                                      <MoreVertical className="w-3 h-3" />
+                                      <MoreVertical className="w-3.5 h-3.5" />
                                     </button>
 
                                     {isReqMenuOpen && (
@@ -427,7 +437,7 @@ export default function Sidebar() {
                                             }}
                                             className="w-full text-left px-3 py-1.5 text-xs text-status-error hover:bg-status-error/10 transition-colors flex items-center space-x-1.5"
                                           >
-                                            <Trash2 className="w-3 h-3" />
+                                            <Trash2 className="w-3.5 h-3.5" />
                                             <span>Delete</span>
                                           </button>
                                         </div>
@@ -442,9 +452,9 @@ export default function Sidebar() {
                       )}
                     </div>
                   );
-                })
-              )}
-            </div>
+                })}
+              </div>
+            )
           ) : (
             <div className="flex flex-col h-full space-y-2">
               {filteredHistory.length > 0 && (

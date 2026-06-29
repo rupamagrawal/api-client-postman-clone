@@ -6,6 +6,7 @@ interface AppState {
   tabs: Tab[];
   activeTabId: string;
   collections: Collection[];
+  collectionsLoading: boolean;
   environments: Environment[];
   activeEnvId: string | null;
   history: HistoryEntry[];
@@ -28,6 +29,7 @@ interface AppState {
   setActiveTab: (id: string) => void;
   updateTab: (id: string, updates: Partial<Tab>) => void;
   setCollections: (collections: Collection[]) => void;
+  setCollectionsLoading: (loading: boolean) => void;
   setEnvironments: (environments: Environment[]) => void;
   setActiveEnv: (id: string | null) => void;
   setHistory: (history: HistoryEntry[]) => void;
@@ -102,6 +104,7 @@ export const useAppStore = create<AppState>((set, get) => {
     tabs: [initialTab],
     activeTabId: initialTab.id,
     collections: [],
+    collectionsLoading: true,
     environments: [],
     activeEnvId: null,
     history: [],
@@ -245,6 +248,8 @@ export const useAppStore = create<AppState>((set, get) => {
     },
 
     setCollections: (collections) => set({ collections }),
+
+    setCollectionsLoading: (collectionsLoading) => set({ collectionsLoading }),
 
     setEnvironments: (environments) => set({ environments }),
 

@@ -23,25 +23,36 @@ export default function Home() {
     closeTab,
     activeTabId,
     setGlobalSearchOpen,
+    setActiveEnv,
+    setCollectionsLoading,
   } = useAppStore();
 
   useEffect(() => {
-    const fetchInitialData = async () => {
+    let attempts = 0;
+    const maxAttempts = 5;
+    
+    const loadData = async () => {
       try {
-        const [cols, envs, hist] = await Promise.all([
+        const [collections, environments, history] = await Promise.all([
           getCollections(),
           getEnvironments(),
-          getHistory(),
+          getHistory()
         ]);
-        setCollections(cols);
-        setEnvironments(envs);
-        setHistory(hist);
+        setCollections(collections);
+        setEnvironments(environments);
+        setHistory(history);
+        if (environments.length > 0) setActiveEnv(environments[0].id);
+        setCollectionsLoading(false);
       } catch (err) {
-        console.error("Failed to fetch initial backend workspace data", err);
+        attempts++;
+        if (attempts < maxAttempts) {
+          setTimeout(loadData, 3000);
+        }
       }
     };
-    fetchInitialData();
-  }, [setCollections, setEnvironments, setHistory]);
+    
+    loadData();
+  }, []);
 
   // Global Keyboard Shortcuts
   useEffect(() => {

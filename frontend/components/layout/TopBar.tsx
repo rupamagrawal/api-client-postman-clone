@@ -105,20 +105,18 @@ export default function TopBar() {
       </div>
 
       {/* Center: Global Search Bar */}
-      <div className="absolute left-1/2 transform -translate-x-1/2 w-[400px] z-30">
+      <div className="absolute left-1/2 transform -translate-x-1/2 z-30">
         <div
           onClick={() => setGlobalSearchOpen(true)}
-          className="flex items-center justify-between px-3 py-1.5 bg-sidebar border border-border rounded cursor-pointer text-text-secondary hover:text-text-primary hover:border-text-secondary transition-all"
+          className="relative flex items-center bg-sidebar border border-border rounded px-3 gap-2 w-96 h-8 cursor-pointer hover:border-text-secondary"
         >
-          <div className="flex items-center space-x-2 min-w-0">
-            <Search className="w-4 h-4 flex-shrink-0" />
-            <span className="text-xs truncate">
-              Search Postman (append &gt; to see and run commands)
-            </span>
-          </div>
-          <span className="text-[10px] text-text-secondary bg-panel px-1.5 py-0.5 rounded font-mono border border-border">
-            Ctrl K
+          <Search size={14} className="text-text-secondary flex-none" />
+          <span className="text-text-secondary text-sm flex-1 truncate">
+            Search Postman (append &gt; to see and run commands)
           </span>
+          <kbd className="text-xs text-text-secondary border border-border rounded px-1 py-0.5 font-mono flex-none">
+            Ctrl K
+          </kbd>
         </div>
       </div>
 
