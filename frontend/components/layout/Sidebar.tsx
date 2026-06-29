@@ -293,14 +293,14 @@ export default function Sidebar() {
                 {[1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className="animate-pulse h-8 rounded bg-border opacity-50"
+                    className="animate-pulse h-8 rounded bg-border opacity-40"
                   />
                 ))}
               </div>
-            ) : filteredCollections.length === 0 ? (
-              <div className="text-center py-10 text-xs text-text-secondary italic">
+            ) : collections.length === 0 ? (
+              <p className="text-text-secondary text-sm text-center py-8">
                 No collections found
-              </div>
+              </p>
             ) : (
               <div className="space-y-1">
                 {filteredCollections.map((col) => {

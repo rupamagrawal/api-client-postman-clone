@@ -42,11 +42,13 @@ export default function Home() {
         setEnvironments(environments);
         setHistory(history);
         if (environments.length > 0) setActiveEnv(environments[0].id);
-        setCollectionsLoading(false);
+        useAppStore.getState().setCollectionsLoading(false);
       } catch (err) {
         attempts++;
         if (attempts < maxAttempts) {
           setTimeout(loadData, 3000);
+        } else {
+          useAppStore.getState().setCollectionsLoading(false);
         }
       }
     };
