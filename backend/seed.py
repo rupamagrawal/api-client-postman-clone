@@ -1,17 +1,31 @@
 import json
 from datetime import datetime, timedelta
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from models import Collection, Request, Environment, EnvironmentVariable, History
 
 async def seed_db(db: AsyncSession) -> None:
-    """Seeds the database with initial collections, requests, environments, and history if it's empty."""
+    """Seeds the database with initial collections, requests, environments, and history if it's empty or has old data."""
     # Check if collections already exist
     result = await db.execute(select(Collection))
-    if result.scalars().first() is not None:
+    collections = result.scalars().all()
+    
+    # If the database contains old mock data, clear it to allow fresh seeding
+    has_old_data = any(c.name in ["Postman Echo", "Local API"] for c in collections)
+    
+    if len(collections) > 0 and not has_old_data:
         # DB is not empty, skip seeding
         print("Database is not empty. Skipping seed.")
         return
+
+    if has_old_data:
+        print("Old mock data detected. Clearing database for fresh seeding...")
+        await db.execute(delete(Request))
+        await db.execute(delete(Collection))
+        await db.execute(delete(EnvironmentVariable))
+        await db.execute(delete(Environment))
+        await db.execute(delete(History))
+        await db.commit()
 
     print("Seeding database...")
 
